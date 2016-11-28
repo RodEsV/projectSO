@@ -1,22 +1,21 @@
 package so_project;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class Island {
-	
-	// entidad isla tiene un conjunto de personas y un bote
 	
 	private ArrayList<Person> people; 
 	private Boat boat;
 	String name;
+	Semaphore mutex;
 	
 	public Island(String name, Boat boat){
 		this.people = new ArrayList<>();
 		this.boat = boat;
 		this.name = name;
+		this.mutex = new Semaphore(1, true);
 	}
-	
-	// al inicializar la isla arrancan todos los hilos en la isla
 	
 	public void init(){
 		for (Person person : people) {
@@ -50,9 +49,9 @@ public class Island {
 		return kids;
 	}
 	
-	public synchronized void deletePeople( ArrayList<Person> people){
+	public synchronized void deletePeople( ArrayList<Person> people, Island current){
 		for (Person person : people) {
-			System.out.println(this.people.remove(person));
+			System.out.println("se removio a la persona " + current.people.remove(person));
 		}
 	}
 	
